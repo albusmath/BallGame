@@ -1,0 +1,79 @@
+package com.example.albus;
+
+import android.annotation.*;
+import android.content.*;
+import android.graphics.*;
+import android.util.*;
+import android.view.*;
+
+public class Ball extends View {
+	private double r, x, y;
+	public Vector_3d acceleration, velocity;
+	private long lastTime = 0;
+	
+	public Ball(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		r = 40;
+		x = 0;
+		y = 0;
+		
+		acceleration = new Vector_3d();
+		velocity = new Vector_3d();
+	}
+	
+	public double getR() {
+		return r;
+	}
+
+	@SuppressLint("Override")
+	public double getX() {
+		return x;
+	}
+	
+	@SuppressLint("Override")
+	public double getY() {
+		return y;
+	}
+
+	@SuppressLint("Override")
+	public void setX(double d) {
+		x = d;
+	}
+	
+	@SuppressLint("Override")	
+	public void setY(double y0) {
+		y = y0;
+	}
+	
+	@SuppressLint("Override")
+	public void setR(double r0) {
+		r = r0;
+	}
+	
+	boolean isIntersected(	Vector_2d A, Vector_2d B,
+				Vector_2d X, Vector_2d Y) {
+		return true ;
+	}
+	
+	void reflect() {
+		
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		System.out.println("redraw!!");
+		long currTime = System.nanoTime();
+		if (lastTime > 0) {
+			double dt = (currTime - lastTime) / 1000000000.0;
+			velocity = velocity.add(acceleration.multiply(dt));
+			x -= velocity.x * dt;
+			y += velocity.y * dt;
+			Paint paint = new Paint();
+			paint.setColor(Color.GREEN);
+			canvas.drawCircle((float)x, (float)y, (float)r, paint);
+		}
+		lastTime = currTime;
+		invalidate();
+		System.out.println(getLeft() + " " + getRight() + " " + getTop() + " " + getBottom());
+	}
+}
